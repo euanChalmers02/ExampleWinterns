@@ -1,7 +1,7 @@
 # mongodb-springboot
 The project demonstrates basic CRUD examples using MongoDB and SpringBoot
 
-For this tutorial, we need to create a Spring Boot project, which can be done easily using Spring Initialzr. It is advantageous to use an IDE (Integrated Development Environment) like Eclipse for this tutorial.
+For this [tutorial](https://www.mongodb.com/compatibility/spring-boot), we need to create a Spring Boot project, which can be done easily using Spring Initialzr. It is advantageous to use an IDE (Integrated Development Environment) like Eclipse for this tutorial.
 
 # Project Setup
 Once the project is setup, we need to create Java class and fields that will be mapped into MongoDB collection and fields.
