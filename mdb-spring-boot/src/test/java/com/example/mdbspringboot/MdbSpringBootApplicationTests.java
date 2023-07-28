@@ -8,6 +8,7 @@ class MdbSpringBootApplicationTests {
 
 	@Test
 	void contextLoads() {
+		DummyAPI.getEmployees();
 	}
 
 }

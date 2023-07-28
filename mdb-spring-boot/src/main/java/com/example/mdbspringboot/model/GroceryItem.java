@@ -1,16 +1,16 @@
 package com.example.mdbspringboot.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("GroceryItem")
 public class GroceryItem {
 
-
-
 		@Id
 		private String id;
 
+		@Schema(name="name")
 		private String name;
 		private int quantity;
 		private String category;
@@ -47,7 +47,7 @@ public class GroceryItem {
 			this.quantity = quantity;
 		}
 
-				public String getCategory() {
+		public String getCategory() {
 			return category;
 		}
 
