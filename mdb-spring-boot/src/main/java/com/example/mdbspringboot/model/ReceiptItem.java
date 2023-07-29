@@ -13,22 +13,21 @@ import java.util.List;
 public class ReceiptItem {
 
 		@Id
-		@Schema(name="card number (transaction id)")
+		@Schema(name="transaction id")
 		private String id;
 
 		@Schema(name = "Array of items bought")
 		private ArrayList<ShoppingItem> items;
 
-		@Schema(name = "Card number")
-		private String cardID;
+		@Schema(name = "account id")
+		private String accountID;
 
 
-
-	public ReceiptItem(String id, ArrayList<ShoppingItem> items, String cardID){
+	public ReceiptItem(String id, ArrayList<ShoppingItem> items, String accountID){
 			super();
 			this.id = id;
 			this.items = items;
-			this.cardID = cardID;
+			this.accountID = accountID;
 		}
 
 		public String getId() {
@@ -39,8 +38,8 @@ public class ReceiptItem {
 			this.id = id;
 		}
 
-		public String getCardId(){
-			return cardID;
+		public String getAccountId(){
+			return accountID;
 		}
 
 		public List<ShoppingItem> getProducts(){
