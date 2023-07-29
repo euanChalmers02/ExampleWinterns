@@ -39,15 +39,7 @@ public class TransacationService {
 
     // Print details in readable form
     public String getItemDetails(String id) {
-
-        ReceiptItem item = receiptRepo.findById(id).get();
-
-        System.out.println(
-                "Item Name: " + item.getName() +
-                        ", \nItem Category: " + item.getCategory()
-        );
-
-        return "";
+        return null;
     }
 
 }
