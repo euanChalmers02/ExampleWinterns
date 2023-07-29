@@ -14,6 +14,7 @@ public class UserInsightsService {
     @Autowired
     ItemRepository receiptRepo;
 
+//    change this to a repo where can write a query
     public List<ReceiptItem> showAllReceiptsByCardID(String cardID) {
         return receiptRepo.findAll().stream().filter(receipt -> receipt.getCardId().equals(cardID)).toList();
     }

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Detailed Transaction System - Hackathon 2023", description = "Winterns (add info here")
+@Tag(name = "User Insights", description = "(add info here)")
 @RestController
 public class UserInsightsController {
 
