@@ -2,6 +2,7 @@ package com.example.mdbspringboot.controllers;
 
 import com.example.mdbspringboot.services.TransacationService;
 import com.example.mdbspringboot.model.ReceiptItem;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Detailed Transaction System - Hackathon 2023", description = "Winterns (add info here")
+@Tag(name = "Detailed Transaction System")
 @RestController
 public class TransactionController {
 
@@ -18,6 +19,9 @@ public class TransactionController {
     TransacationService transacationService;
 
     @GetMapping("/hello")
+    @Operation(
+            summary = "This is a simple hello world that gets the status of the server",
+            description = "Will return hello world or hello <your name> if you pass query param of your name")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
         return String.format("Hello! %s", name);
     }

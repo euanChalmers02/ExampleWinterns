@@ -6,7 +6,8 @@ import com.example.mdbspringboot.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserInsightsService {
@@ -19,17 +20,24 @@ public class UserInsightsService {
         return receiptRepo.findAll().stream().filter(receipt -> receipt.getCardId().equals(cardID)).toList();
     }
 
-    public List<ShoppingItem> showMostPopularItemCustomerBuys(String cardID) {
-//        needs work to make fucntionq
-        return receiptRepo.findAll().stream().filter(receipt -> receipt.getCardId().equals(cardID)).toList().get(0).getProducts();
-
+    public List<String> showMostPopularItemCustomerBuys(String cardID) {
+        List<ShoppingItem> allProducts = new ArrayList<>();
+        receiptRepo.findAll().stream().filter(receipt -> receipt.getCardId().equals(cardID)).forEach(receipt -> receipt.getProducts().forEach(product -> allProducts.add(product)));;
+        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 2);
+        System.out.println(res);
+        return res;
     }
 
+    public static List<String> getTopProducts(ShoppingItem[] items, int topCount) {
+        Map<String, Long> nameCounts = Arrays.stream(items)
+                .collect(Collectors.groupingBy(ShoppingItem::getName, Collectors.counting()));
 
-//    add as many as required here (contain all the models and functionality in methods here)
-
-
-
+        return nameCounts.entrySet().stream()
+                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                .limit(topCount)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
 
 
 }

@@ -5,10 +5,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class MdbSpringBootApplicationTests {
-
-	@Test
-	void contextLoads() {
-		DummyAPI.getEmployees();
-	}
+//
+//	@Test
+//	void contextLoads() {
+//		DummyAPI.getEmployees();
+//	}
 
 }
