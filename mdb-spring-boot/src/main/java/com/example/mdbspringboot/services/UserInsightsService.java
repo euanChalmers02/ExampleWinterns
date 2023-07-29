@@ -14,19 +14,20 @@ public class UserInsightsService {
 
     @Autowired
     ItemRepository receiptRepo;
-//
-////    change this to a repo where can write a query
-//    public List<ReceiptItem> showAllReceiptsByCardID(String cardID) {
-//        return receiptRepo.findAll().stream().filter(receipt -> receipt.getCardId().equals(cardID)).toList();
-//    }
-//
-//    public List<String> showMostPopularItemCustomerBuys(String cardID) {
-//        List<ShoppingItem> allProducts = new ArrayList<>();
-//        receiptRepo.findAll().stream().filter(receipt -> receipt.getCardId().equals(cardID)).forEach(receipt -> receipt.getProducts().forEach(product -> allProducts.add(product)));;
-//        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 2);
-//        System.out.println(res);
-//        return res;
-//    }
+
+//    change this to a repo where can write a query
+    public List<ReceiptItem> showAllReceiptsByCardID(String cardID) {
+//        need to change to handle multiple users
+        return receiptRepo.findAll().stream().toList();
+    }
+
+    public List<String> showMostPopularItemCustomerBuys(String cardID) {
+        List<ShoppingItem> allProducts = new ArrayList<>();
+        receiptRepo.findAll().forEach(receipt -> allProducts.addAll(receipt.getProducts()));;
+        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 2);
+        System.out.println(res);
+        return res;
+    }
 
     public static List<String> getTopProducts(ShoppingItem[] items, int topCount) {
         Map<String, Long> nameCounts = Arrays.stream(items)
