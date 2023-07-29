@@ -10,15 +10,12 @@ public class ShoppingItem {
 		@Schema(name="name")
 		private String name;
 		private int quantity;
-		private String category;
-
 		private float price;
 		
-		public ShoppingItem(String name, int quantity, String category, float price) {
+		public ShoppingItem(String name, int quantity, float price) {
 			super();
 			this.name = name;
 			this.quantity = quantity;
-			this.category = category;
 			this.price = price;
 		}
 
@@ -36,14 +33,6 @@ public class ShoppingItem {
 
 		public void setItemQuantity(int quantity) {
 			this.quantity = quantity;
-		}
-
-		public String getCategory() {
-			return category;
-		}
-
-		public void setCategory(String category) {
-			this.category = category;
 		}
 
 }
