@@ -4,31 +4,22 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("GroceryItem")
-public class GroceryItem {
-
-		@Id
-		private String id;
+@Document("Shopping Item")
+public class ShoppingItem {
 
 		@Schema(name="name")
 		private String name;
 		private int quantity;
 		private String category;
+
+		private float price;
 		
-		public GroceryItem(String id, String name, int quantity, String category) {
+		public ShoppingItem(String name, int quantity, String category, float price) {
 			super();
-			this.id = id;
 			this.name = name;
 			this.quantity = quantity;
 			this.category = category;
-		}
-
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
+			this.price = price;
 		}
 
 		public String getName() {
