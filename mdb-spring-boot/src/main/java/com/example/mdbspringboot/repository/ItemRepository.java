@@ -10,7 +10,8 @@ public interface ItemRepository extends MongoRepository<ReceiptItem, String> {
 
 	@Query(value="{category:'?0'}")
 	List<ReceiptItem> findAll(String category);
-	
+
+	@Query(value="{accountId:'?0'}")
 	List<ReceiptItem> findByAccountId(String accountId);
 
 }

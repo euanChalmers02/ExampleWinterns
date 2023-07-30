@@ -3,9 +3,14 @@ package com.example.mdbspringboot.services;
 import com.example.mdbspringboot.model.ReceiptItem;
 import com.example.mdbspringboot.model.ShoppingItem;
 import com.example.mdbspringboot.repository.ItemRepository;
+import com.example.mdbspringboot.repository.NatwestApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.StringReader;
+import javax.json.*;
+import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -24,7 +29,7 @@ public class UserInsightsService {
     public List<String> showMostPopularItemCustomerBuys(String cardID) {
         List<ShoppingItem> allProducts = new ArrayList<>();
         receiptRepo.findAll().forEach(receipt -> allProducts.addAll(receipt.getItems()));;
-        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 2);
+        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 3);
         System.out.println(res);
         return res;
     }
@@ -38,6 +43,34 @@ public class UserInsightsService {
                 .limit(topCount)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
+    }
+
+    public JsonObject combiningData(String accID, String transactionID) throws URISyntaxException, IOException, InterruptedException {
+
+//        should not be hardcoded for prod
+        var transaction = NatwestApiClient.getByAccountTransacationData("djefferson",accID);
+        System.out.println(transaction);
+        JsonReader jsonReader = Json.createReader(new StringReader(transaction));
+        JsonObject jsonObject = jsonReader.readObject();
+        jsonReader.close();
+
+        JsonArray transactions = jsonObject.getJsonObject("Data").getJsonArray("Transaction");
+        JsonObject natwestTransaction = null;
+        for (JsonObject transactionObject : transactions.getValuesAs(JsonObject.class)) {
+            String accountId = transactionObject.getString("AccountId");
+            String transactionId = transactionObject.getString("TransactionId");
+            if (transactionId.equals(transactionID)) {
+                natwestTransaction = transactionObject;
+                break;
+            }
+        }
+
+        var receipts = receiptRepo.findByAccountId(accID).stream().filter(receipt -> receipt.getTransactionId().equals(transactionID)).toList();
+        JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder(natwestTransaction);
+        jsonObjectBuilder.add("Products",receipts.get(0).getJsonItems());
+        JsonObject updatedNatwestTransaction = jsonObjectBuilder.build();
+
+        return updatedNatwestTransaction;
     }
 
 }
