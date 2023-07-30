@@ -19,11 +19,6 @@ public class UserInsightsController {
     @Autowired
     UserInsightsService userInsightsService;
 
-    @GetMapping("/userInsights/hello")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return "Insights will be displayed in methods here";
-    }
-
     @GetMapping("/userInsights/{userID}/mostPopularItems")
     public ResponseEntity<List<String>> mostPopularItems(@PathVariable("userID") String id){
         try {
@@ -34,6 +29,7 @@ public class UserInsightsController {
         }
     }
 
+    /* ALREADY AVAILABLE IN ITEMISED RECEIPTS ENDPOINTS
     @GetMapping("/userInsights/{userID}/getAllReceipts")
     public ResponseEntity<List<ReceiptItem>> getAllReceiptsForCard(@PathVariable("userID") String id){
         try {
@@ -43,8 +39,6 @@ public class UserInsightsController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
+    */
 
 }
