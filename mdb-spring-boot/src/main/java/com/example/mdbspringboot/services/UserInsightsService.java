@@ -15,9 +15,9 @@ public class UserInsightsService {
     @Autowired
     ItemRepository receiptRepo;
 
-//    change this to a repo where can write a query
+//  change this to a repo where can write a query
     public List<ReceiptItem> showAllReceiptsByCardID(String cardID) {
-//        need to change to handle multiple users
+//      need to change to handle multiple users
         return receiptRepo.findAll().stream().toList();
     }
 
@@ -39,6 +39,5 @@ public class UserInsightsService {
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
-
 
 }
