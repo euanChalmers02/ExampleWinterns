@@ -88,40 +88,4 @@ public class TransactionController {
         }
     }
 
-    /* DETAILS SERVICE NOT DEVELOPED
-    @GetMapping("receipts/{id}/details")
-    public ResponseEntity<String> getDetails(@PathVariable("id") String id){
-        try {
-            String details = transactionService.getItemDetails(id);
-            return new ResponseEntity<>(details,HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    */
-
-    /* CATEGORY FOR RECEIPTS NOT DEVELOPED
-    @GetMapping("/receipts/{category}")
-    public ResponseEntity<List<ReceiptItem>> getItemsByCategory(@PathVariable("category") String category){
-        try {
-            List<ReceiptItem> items = transactionService.getItemsByCategory(category);
-            return new ResponseEntity<>(items,HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    */
-
-    /* COUNT NOT NEEDED FOR NOW
-    @GetMapping("/receipts/count")
-    public ResponseEntity<Long> getCount(){
-        try {
-            long count = transactionService.findCountOfItems();
-            return new ResponseEntity<>(count,HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    */
-
 }

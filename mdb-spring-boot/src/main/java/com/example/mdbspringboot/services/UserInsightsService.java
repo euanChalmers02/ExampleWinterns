@@ -20,11 +20,10 @@ public class UserInsightsService {
     @Autowired
     ItemRepository receiptRepo;
 
-    public List<String> showMostPopularItemCustomerBuys(String cardID) {
+    public List<String> showMostPopularItemCustomerBuys(String accountID) {
         List<ShoppingItem> allProducts = new ArrayList<>();
         receiptRepo.findAll().forEach(receipt -> allProducts.addAll(receipt.getItems()));;
         var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 3);
-        System.out.println(res);
         return res;
     }
 
@@ -40,8 +39,7 @@ public class UserInsightsService {
     }
 
     public JsonObject combiningData(String accID, String transactionID) throws URISyntaxException, IOException, InterruptedException {
-
-//        should not be hardcoded for prod
+//      should not be hardcoded for prod
         var transaction = NatwestApiClient.getByAccountTransacationData("djefferson",accID);
         System.out.println(transaction);
         JsonReader jsonReader = Json.createReader(new StringReader(transaction));

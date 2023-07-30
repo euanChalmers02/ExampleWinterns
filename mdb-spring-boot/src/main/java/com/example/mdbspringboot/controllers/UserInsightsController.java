@@ -5,6 +5,7 @@ import com.example.mdbspringboot.model.ShoppingItem;
 import com.example.mdbspringboot.services.TransactionService;
 import com.example.mdbspringboot.services.UserInsightsService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ public class UserInsightsController {
     @Autowired
     UserInsightsService userInsightsService;
 
-    @GetMapping("/userInsights/{userID}/mostPopularItems")
+    @GetMapping("/userInsights/{accountID}/mostPopularItems")
     @Operation(
             summary = "Provides most popular items for the account",
             description = "Enables insight of most popular item the customer buys")
@@ -31,7 +32,13 @@ public class UserInsightsController {
             @ApiResponse(responseCode = "202", description = "Receipt successfully added"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<List<String>> mostPopularItems(@PathVariable("userID") String id){
+    public ResponseEntity<List<String>> mostPopularItems(
+        @Parameter(
+                name = "accountID",
+                description = "The unique identifier of the account",
+                required = true,
+                example = "fb246b90-e549-44ef-831e-ea7fe8cf88c9")
+        @PathVariable("accountID") String id){
         try {
             List<String> items = userInsightsService.showMostPopularItemCustomerBuys(id);
             return new ResponseEntity<>(items,HttpStatus.ACCEPTED);
@@ -48,7 +55,19 @@ public class UserInsightsController {
             @ApiResponse(responseCode = "202", description = "Data successfully combined and returned"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<String> combineData(@PathVariable("accountID") String id, @PathVariable("transactionID") String transactionID){
+    public ResponseEntity<String> combineData(
+        @Parameter(
+                name = "accountID",
+                description = "The unique identifier of the account",
+                required = true,
+                example = "fb246b90-e549-44ef-831e-ea7fe8cf88c9")
+        @PathVariable("accountID") String id,
+        @Parameter(
+                name = "transactionID",
+                description = "The unique identifier of the transaction",
+                required = true,
+                example = "bd5e0498-21a3-400e-aa2d-1e747c16485f")
+        @PathVariable("transactionID") String transactionID){
         try {
             var result = userInsightsService.combiningData(id,transactionID);
             return new ResponseEntity<>(result.toString(),HttpStatus.ACCEPTED);
