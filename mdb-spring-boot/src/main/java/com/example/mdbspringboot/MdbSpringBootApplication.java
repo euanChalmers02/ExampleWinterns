@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
 
 @OpenAPIDefinition(
 		info = @Info(
-				title = "API NAME HERE",
+				title = "Digital-Receipt-Xperience (DRX) API",
 				version = "v0.1",
 				description = "Winterns 2023 Hackathon API"
 		)

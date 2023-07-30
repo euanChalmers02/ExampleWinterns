@@ -1,9 +1,14 @@
 package com.example.mdbspringboot.controllers;
 
-import com.example.mdbspringboot.services.TransacationService;
+import com.example.mdbspringboot.services.TransactionService;
 import com.example.mdbspringboot.model.ReceiptItem;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Content;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,81 +16,112 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "Detailed Transaction System")
+@Tag(name = "Itemised receipts")
 @RestController
 public class TransactionController {
 
     @Autowired
-    TransacationService transacationService;
+    TransactionService transactionService;
 
-    @GetMapping("/hello")
+    @PostMapping("/receipt")
     @Operation(
-            summary = "This is a simple hello world that gets the status of the server",
-            description = "Will return hello world or hello <your name> if you pass query param of your name")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return String.format("Hello! %s", name);
-    }
-
-    @GetMapping("/receipts")
-    public ResponseEntity<List<ReceiptItem>> getAllItems(){
-        try {
-            List<ReceiptItem> items = transacationService.showAllItems();
-            return new ResponseEntity<>(items,HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/receipts/{category}")
-    public ResponseEntity<List<ReceiptItem>> getItemsByCategory(@PathVariable("category") String category){
-        try {
-            List<ReceiptItem> items = transacationService.getItemsByCategory(category);
-            return new ResponseEntity<>(items,HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-
-    @PostMapping("/receipts")
+        summary = "Send a receipt for a transaction",
+        description = "Enables sending of itemised receipts which correspond to their related transactions")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "202", description = "Receipt successfully added"), 
+        @ApiResponse(responseCode = "500", description = "Internal server error") 
+    })
     public ResponseEntity<HttpStatus> addItem(@RequestBody ReceiptItem item){
         try {
-            transacationService.createItem(item);
+            transactionService.createItem(item);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/receipts/count")
-    public ResponseEntity<Long> getCount(){
+    @GetMapping("receipts/{account_id}")
+    @Operation(
+        summary = "Get all receipts for an account",
+        description = "Enables retrieval of all receipts associated with an account id")
+    @ApiResponses(value = { 
+        @ApiResponse(
+            responseCode = "200", 
+            description = "Receipts successfully retrieved", 
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = ReceiptItem.class)
+        )), 
+        @ApiResponse(
+            responseCode = "500", 
+            description = "Internal server error"
+        ) 
+    })
+    public ResponseEntity<List<ReceiptItem>> getReceiptsForAccount(
+        @Parameter(
+        description = "The unique identifier of the account",
+        required = true,
+        example = "fb246b90-e549-44ef-831e-ea7fe8cf88c9")
+        @PathVariable("account_id") String id){
         try {
-            long count = transacationService.findCountOfItems();
-            return new ResponseEntity<>(count,HttpStatus.ACCEPTED);
+            List<ReceiptItem> receipts = transactionService.showReceiptsForAccount(id);
+            return new ResponseEntity<>(receipts,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @GetMapping("/receipts")
+    @Operation(
+        summary = "Get receipts for all transactions",
+        description = "Enables retrieval of itemised receipts for all transactions")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Receipts successfully retrieved"), 
+        @ApiResponse(responseCode = "500", description = "Internal server error") 
+    })
+    public ResponseEntity<List<ReceiptItem>> getAllItems(){
+        try {
+            List<ReceiptItem> items = transactionService.showAllItems();
+            return new ResponseEntity<>(items,HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
+    /* DETAILS SERVICE NOT DEVELOPED
     @GetMapping("receipts/{id}/details")
     public ResponseEntity<String> getDetails(@PathVariable("id") String id){
         try {
-            String details = transacationService.getItemDetails(id);
+            String details = transactionService.getItemDetails(id);
             return new ResponseEntity<>(details,HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    */
 
-////    move to customer controller???
-//    @GetMapping("/customer/{id}/CustomerInsightsALL")
-//    public ResponseEntity<List<GroceryItem>> getCustomerInsights(@PathVariable("id") String id){
-//        try {
-////            fucntionalitly call here
-//            return new ResponseEntity<>(items,HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
-//    }
+    /* CATEGORY FOR RECEIPTS NOT DEVELOPED
+    @GetMapping("/receipts/{category}")
+    public ResponseEntity<List<ReceiptItem>> getItemsByCategory(@PathVariable("category") String category){
+        try {
+            List<ReceiptItem> items = transactionService.getItemsByCategory(category);
+            return new ResponseEntity<>(items,HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    */
+
+    /* COUNT NOT NEEDED FOR NOW
+    @GetMapping("/receipts/count")
+    public ResponseEntity<Long> getCount(){
+        try {
+            long count = transactionService.findCountOfItems();
+            return new ResponseEntity<>(count,HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    */
 
 }
