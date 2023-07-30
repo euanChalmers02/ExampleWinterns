@@ -15,16 +15,10 @@ public class UserInsightsService {
     @Autowired
     ItemRepository receiptRepo;
 
-//  change this to a repo where can write a query
-    public List<ReceiptItem> showAllReceiptsByCardID(String cardID) {
-//      need to change to handle multiple users
-        return receiptRepo.findAll().stream().toList();
-    }
-
     public List<String> showMostPopularItemCustomerBuys(String cardID) {
         List<ShoppingItem> allProducts = new ArrayList<>();
         receiptRepo.findAll().forEach(receipt -> allProducts.addAll(receipt.getItems()));;
-        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 2);
+        var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 3);
         System.out.println(res);
         return res;
     }

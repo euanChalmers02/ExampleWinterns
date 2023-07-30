@@ -29,16 +29,4 @@ public class UserInsightsController {
         }
     }
 
-    /* ALREADY AVAILABLE IN ITEMISED RECEIPTS ENDPOINTS
-    @GetMapping("/userInsights/{userID}/getAllReceipts")
-    public ResponseEntity<List<ReceiptItem>> getAllReceiptsForCard(@PathVariable("userID") String id){
-        try {
-            List<ReceiptItem> items = userInsightsService.showAllReceiptsByCardID(id);
-            return new ResponseEntity<>(items,HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    */
-
 }
