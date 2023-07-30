@@ -67,7 +67,18 @@ public class UserInsightsService {
 
         var receipts = receiptRepo.findByAccountId(accID).stream().filter(receipt -> receipt.getTransactionId().equals(transactionID)).toList();
         JsonObjectBuilder jsonObjectBuilder = Json.createObjectBuilder(natwestTransaction);
-        jsonObjectBuilder.add("Products",receipts.get(0).getJsonItems());
+
+
+        JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
+        for (ShoppingItem item : receipts.get(0).getItems()) {
+            JsonObject jsonObjectItmes = Json.createObjectBuilder()
+                    .add("name", item.getName())
+                    .add("price", item.getPrice())
+                    .add("quantity", item.getItemQuantity())
+                    .build();
+            jsonArrayBuilder.add(jsonObjectItmes);
+        }
+        jsonObjectBuilder.add("items",jsonArrayBuilder.build());
         JsonObject updatedNatwestTransaction = jsonObjectBuilder.build();
 
         return updatedNatwestTransaction;
