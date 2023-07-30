@@ -2,7 +2,7 @@ package com.example.mdbspringboot.controllers;
 
 import com.example.mdbspringboot.model.ReceiptItem;
 import com.example.mdbspringboot.model.ShoppingItem;
-import com.example.mdbspringboot.services.TransacationService;
+import com.example.mdbspringboot.services.TransactionService;
 import com.example.mdbspringboot.services.UserInsightsService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;

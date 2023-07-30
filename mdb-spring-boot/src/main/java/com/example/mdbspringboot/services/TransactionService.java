@@ -9,37 +9,43 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TransacationService {
+public class TransactionService {
 
     @Autowired
     ItemRepository receiptRepo;
 
-
-    //CREATE
     public void createItem(ReceiptItem item) {
         receiptRepo.save(item);
     }
 
+    public List<ReceiptItem> showReceiptsForAccount(String accountId) {
+        return receiptRepo.findByAccountId(accountId);
+    }
 
     public List<ReceiptItem> showAllItems() {
         return receiptRepo.findAll();
     }
 
-
-    // 3. Get name and items of a all items of a particular category
+    // Get name and items of a all items of a particular category
+    /*
     public List<ReceiptItem> getItemsByCategory(String category) {
         return receiptRepo.findAll(category);
     }
+    */
 
-    // 4. Get count of documents in the collection
+    // Get count of documents in the collection
+    /*
     public long findCountOfItems() {
         long count = receiptRepo.count();
         return count;
     }
+    */
 
     // Print details in readable form
+    /*
     public String getItemDetails(String id) {
         return null;
     }
+    */
 
 }

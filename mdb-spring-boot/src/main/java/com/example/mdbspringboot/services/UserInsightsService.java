@@ -23,7 +23,7 @@ public class UserInsightsService {
 
     public List<String> showMostPopularItemCustomerBuys(String cardID) {
         List<ShoppingItem> allProducts = new ArrayList<>();
-        receiptRepo.findAll().forEach(receipt -> allProducts.addAll(receipt.getProducts()));;
+        receiptRepo.findAll().forEach(receipt -> allProducts.addAll(receipt.getItems()));;
         var res = getTopProducts(allProducts.toArray(ShoppingItem[]::new), 2);
         System.out.println(res);
         return res;
